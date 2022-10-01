@@ -1,0 +1,12 @@
+ARG NODE_IMAGE_TAG
+FROM node:${NODE_IMAGE_TAG}
+
+ARG PROJECT_NAME
+ENV TZ=Asia/Tokyo
+
+RUN corepack enable
+USER node
+WORKDIR /${PROJECT_NAME}
+
+EXPOSE 3000 9229
+CMD ["yarn", "dev"]

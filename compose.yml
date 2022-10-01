@@ -1,0 +1,14 @@
+services:
+  frontend:
+    build:
+      context: .
+      args:
+        - NODE_IMAGE_TAG=16.17.1
+        - PROJECT_NAME=${COMPOSE_PROJECT_NAME}
+    volumes:
+      - .:/${COMPOSE_PROJECT_NAME}
+    environment:
+      - NODE_ENV={NODE_ENV:-development}
+    ports:
+      - ${FRONTEND_PORT:-3000}:3000
+      - ${FRONTEND_DEBUG_PORT:-9229}:9229

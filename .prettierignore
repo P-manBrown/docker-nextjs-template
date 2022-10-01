@@ -1,0 +1,18 @@
+# dependencies
+.yarn/*
+.pnp.*
+
+# testing
+/coverage
+
+# next.js
+/.next/
+
+# production
+/build
+
+# typescript
+next-env.d.ts
+
+# Markdown
+*.md

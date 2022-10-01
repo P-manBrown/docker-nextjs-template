@@ -1,0 +1,38 @@
+{
+  "name": "${TPL_PROJECT_NAME}",
+  "dockerComposeFile": ["../compose.yml", "./compose.devcontainer.yml"],
+  "service": "frontend",
+  "workspaceFolder": "/${TPL_PROJECT_NAME}",
+  "postCreateCommand": "bash ./.devcontainer/postCreateCommand/*.sh",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "VisualStudioExptTeam.vscodeintellicode",
+        "EditorConfig.EditorConfig",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "Orta.vscode-jest",
+        "paulshen.paul-typescript-toolkit",
+        "bradlc.vscode-tailwindcss",
+        "arcanis.vscode-zipfs"
+      ],
+      "settings": {
+        "search.exclude": {
+          "**/.yarn": true,
+          "**/.pnp.*": true
+        },
+        "eslint.nodePath": ".yarn/sdks",
+        "prettier.prettierPath": ".yarn/sdks/prettier/index.js",
+        "typescript.tsdk": ".yarn/sdks/typescript/lib",
+        "typescript.enablePromptUseWorkspaceTsdk": true,
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": [
+          "source.addMissingImports",
+          "source.fixAll.eslint"
+        ]
+      }
+    }
+  }
+}
+

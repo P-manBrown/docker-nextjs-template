@@ -1,0 +1,5 @@
+{
+  "workspaces": [
+    "/${TPL_PROJECT_NAME}/*"
+  ]
+}
