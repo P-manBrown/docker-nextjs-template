@@ -4,6 +4,3 @@
 .env
 !.env.template
 
-/.devcontainer/devcontainer.json
-/.yarnrc.yml
-/package.json
