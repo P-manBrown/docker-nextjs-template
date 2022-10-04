@@ -10,10 +10,11 @@ RUN <<-EOF
 	curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg \
 	| dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
 	chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg
-	echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" \
+	echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/\
+	githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" \
 	| tee /etc/apt/sources.list.d/github-cli.list > /dev/null
-	apt update
-	apt install gh -y
+	apt-get update -qq
+	apt-get install -y bash-completion gh
 EOF
 
 RUN corepack enable npm
@@ -26,6 +27,7 @@ RUN gh config set editor "code -w"
 RUN <<-EOF
 	set -eu
 	cat <<-'EOT' >> ~/.bashrc
+		eval "$(gh completion -s bash)"
 		if [ "$SHLVL" = 2 ] ; then
 		  script --flush ~/bashlog/script/`date "+%Y%m%d%H%M%S"`.log
 		fi
