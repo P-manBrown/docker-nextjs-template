@@ -3,12 +3,13 @@ services:
     build:
       context: .
       args:
-        - NODE_IMAGE_TAG=16.17.1
-        - PROJECT_NAME=${COMPOSE_PROJECT_NAME}
+        - NODE_IMAGE_TAG=${NODE_IMAGE_TAG:?}
+        - PROJECT_NAME=${COMPOSE_PROJECT_NAME:?}
+        - USER_NAME=${FRONTEND_USER_NAME:?}
     volumes:
-      - .:/${COMPOSE_PROJECT_NAME}
+      - .:/${COMPOSE_PROJECT_NAME:?}
     environment:
       - NODE_ENV={NODE_ENV:-development}
     ports:
-      - ${FRONTEND_PORT:-3000}:3000
-      - ${FRONTEND_DEBUG_PORT:-9229}:9229
+      - ${FRONTEND_PORT:?}:3000
+      - ${FRONTEND_DEBUG_PORT:?}:9229

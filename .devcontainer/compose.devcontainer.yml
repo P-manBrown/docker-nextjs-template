@@ -3,9 +3,9 @@ services:
     build:
       dockerfile: ./.devcontainer/Dockerfile
     volumes:
-      - bashlog:/home/node/bashlog
-      - gh-config:/home/node/.config/gh
-      - vscode-extensions:/home/node/.vscode-server/extensions
+      - bashlog:/home/${FRONTEND_USER_NAME}/bashlog
+      - gh-config:/home/${FRONTEND_USER_NAME}/.config/gh
+      - vscode-extensions:/home/${FRONTEND_USER_NAME}/.vscode-server/extensions
     command: /bin/sh -c "while sleep 1000; do :; done"
 volumes:
   bashlog:
