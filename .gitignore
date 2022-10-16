@@ -1,6 +1,2 @@
 /.devcontainer/secrets/*
 !/.devcontainer/secrets/*.template
-
-.env
-!.env.template
-

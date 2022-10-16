@@ -3,7 +3,7 @@
   "dockerComposeFile": ["../compose.yml", "./compose.devcontainer.yml"],
   "service": "frontend",
   "workspaceFolder": "/myapp-frontend",
-  "postCreateCommand": "bash ./.devcontainer/postCreateCommand/run-files.sh",
+  "postCreateCommand": "bash ./.devcontainer/post-create.sh",
   "customizations": {
     "vscode": {
       "extensions": [
