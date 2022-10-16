@@ -2,7 +2,7 @@
   "name": "myapp-frontend",
   "dockerComposeFile": ["../compose.yml", "./compose.devcontainer.yml"],
   "service": "frontend",
-  "workspaceFolder": "/myapp-frontend",
+  "workspaceFolder": "/home/node/myapp-frontend",
   "postCreateCommand": "bash ./.devcontainer/post-create.sh",
   "customizations": {
     "vscode": {

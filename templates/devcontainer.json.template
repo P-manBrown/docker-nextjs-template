@@ -2,7 +2,7 @@
   "name": "${TPL_PROJECT_NAME}",
   "dockerComposeFile": ["../compose.yml", "./compose.devcontainer.yml"],
   "service": "frontend",
-  "workspaceFolder": "/${TPL_PROJECT_NAME}",
+  "workspaceFolder": "/home/node/${TPL_PROJECT_NAME}",
   "postCreateCommand": "bash ./.devcontainer/postCreateCommand/*.sh",
   "customizations": {
     "vscode": {

@@ -42,7 +42,7 @@ EOF
 RUN corepack enable npm
 
 USER ${USER_NAME}
-WORKDIR /${PROJECT_NAME}
+WORKDIR /home/${USER_NAME}/${PROJECT_NAME}
 
 RUN gh config set editor "code -w"
 
@@ -54,6 +54,7 @@ RUN <<-EOF
 		  script --flush ~/bashlog/script/`date "+%Y%m%d%H%M%S"`.log
 		fi
 		export PROMPT_COMMAND='history -a'
+		export PS4='+\e[32m[\t]\e[34m[${BASH_SOURCE[0]##*/}:${LINENO}]\e[m> '
 		export HISTFILE=~/bashlog/.bash_history
 	EOT
 	mkdir -p /home/${USER_NAME}/bashlog/script
