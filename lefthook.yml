@@ -1,17 +1,22 @@
 pre-commit:
   parallel: true
   commands:
-    eslint-fix:
-      glob: "src/**/*.{ts,tsx}"
+    eslint:
+      glob: 'src/**/*.{ts,tsx}'
       run: >-
         docker compose run --rm --no-deps frontend bash -c "
-        yarn eslint --fix {staged_files} || exit 0
+        yarn eslint --fix {staged_files}
         "
     prettier:
-      glob: "**/*"
       run: >-
         docker compose run --rm --no-deps frontend bash -c "
-        yarn prettier --write --ignore-unknown {staged_files}
+        yarn prettier {staged_files} --write --ignore-unknown
+        "
+    markdownlint:
+      glob: '*.md'
+      run: >-
+        docker compose run --rm --no-deps frontend bash -c "
+        yarn markdownlint --fix {staged_files}
         "
 commit-msg:
   commands:
@@ -21,18 +26,10 @@ commit-msg:
         yarn commitlint --edit {1}
         "
 pre-push:
-  parallel: true
   commands:
-    eslint-check:
-      files: git diff --name-only HEAD @{push} || git diff --name-only HEAD main
-      glob: "src/**/*.{ts,tsx}"
-      run: >-
-        docker compose run --rm --no-deps frontend bash -c "
-        yarn eslint --max-warnings=0 {files}
-        "
     jest:
       files: git diff --name-only HEAD @{push} || git diff --name-only HEAD main
-      glob: "src/**/*.{ts,tsx}"
+      glob: 'src/**/*.{ts,tsx}'
       run: >-
         docker compose run --rm --no-deps frontend bash -c "
         yarn jest --findRelatedTests {files}

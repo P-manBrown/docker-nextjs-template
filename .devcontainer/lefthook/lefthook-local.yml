@@ -1,16 +1,17 @@
 pre-commit:
   commands:
-    eslint-fix:
-      run: yarn eslint --fix {staged_files} || exit 0
+    eslint:
+      run: yarn eslint --fix {staged_files}
     prettier:
-      run: yarn prettier --write --ignore-unknown {staged_files}
+      run: yarn prettier {staged_files} --write --ignore-unknown
+    markdownlint:
+      run: >-
+        yarn markdownlint --fix {staged_files}
 commit-msg:
   commands:
     commitlint:
       run: yarn commitlint --edit {1}
 pre-push:
   commands:
-    eslint-check:
-      run: yarn eslint --max-warnings=0 {files}
     jest:
       run: yarn jest --findRelatedTests {files}
