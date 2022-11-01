@@ -10,7 +10,8 @@ services:
     volumes:
       - .:/home/${FRONTEND_USER_NAME:?}/${COMPOSE_PROJECT_NAME:?}
     environment:
-      - NODE_ENV={NODE_ENV:?}
+      - NODE_ENV=${NODE_ENV:?}
     ports:
       - ${FRONTEND_PORT:?}:3000
       - ${FRONTEND_DEBUG_PORT:?}:9229
+      - ${STORYBOOK_PORT:?}:6006

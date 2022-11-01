@@ -57,6 +57,6 @@ EOF
 
 RUN mkdir -p /home/${USER_NAME}/.vscode-server/extensions
 
-EXPOSE 3000 9229
+EXPOSE 3000 6006 9229
 
 CMD ["yarn", "dev"]
