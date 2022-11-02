@@ -11,6 +11,9 @@
         "EditorConfig.EditorConfig",
         "dbaeumer.vscode-eslint",
         "esbenp.prettier-vscode",
+        "yzhang.markdown-all-in-one",
+        "DavidAnson.vscode-markdownlint",
+        "bierner.markdown-preview-github-styles",
         "Orta.vscode-jest",
         "paulshen.paul-typescript-toolkit",
         "bradlc.vscode-tailwindcss",
@@ -30,7 +33,14 @@
         "editor.codeActionsOnSave": [
           "source.addMissingImports",
           "source.fixAll.eslint"
-        ]
+        ],
+        "[markdown]": {
+          "editor.defaultFormatter": "yzhang.markdown-all-in-one",
+          "editor.formatOnSave": true,
+          "editor.codeActionsOnSave": {
+            "source.fixAll.markdownlint": true
+          }
+        }
       }
     }
   }
