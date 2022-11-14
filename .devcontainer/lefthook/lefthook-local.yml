@@ -5,8 +5,7 @@ pre-commit:
     prettier:
       run: yarn prettier {staged_files} --write --ignore-unknown
     markdownlint:
-      run: >-
-        yarn markdownlint --fix {staged_files}
+      run: yarn markdownlint --fix {staged_files}
 commit-msg:
   commands:
     commitlint:
