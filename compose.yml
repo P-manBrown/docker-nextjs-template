@@ -3,15 +3,14 @@ services:
     build:
       context: .
       args:
-        - NODE_IMAGE_TAG=${NODE_IMAGE_TAG:?}
         - PROJECT_NAME=${COMPOSE_PROJECT_NAME:?}
         - USER_NAME=${FRONTEND_USER_NAME:?}
     restart: on-failure
     volumes:
       - .:/home/${FRONTEND_USER_NAME:?}/${COMPOSE_PROJECT_NAME:?}
     environment:
-      - NODE_ENV=${NODE_ENV:?}
+      - NODE_ENV=${NODE_ENV:-development}
     ports:
-      - ${FRONTEND_PORT:?}:3000
-      - ${FRONTEND_DEBUG_PORT:?}:9229
-      - ${STORYBOOK_PORT:?}:6006
+      - ${FRONTEND_PORT:-3000}:3000
+      - ${FRONTEND_DEBUG_PORT:-9229}:9229
+      - ${STORYBOOK_PORT:-6006}:6006
