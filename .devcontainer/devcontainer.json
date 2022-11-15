@@ -3,7 +3,17 @@
   "dockerComposeFile": ["../compose.yml", "./compose.devcontainer.yml"],
   "service": "frontend",
   "workspaceFolder": "/home/node/myapp-frontend",
-  "postCreateCommand": "bash ./.devcontainer/post-create.sh",
+  "postCreateCommand": "bash ./.devcontainer/postCreateCommand.sh",
+  "features": {
+    "ghcr.io/devcontainers/features/common-utils:1": {
+      "username": "node"
+    },
+    "ghcr.io/P-manBrown/devcontainer-features/git-from-src-fast:1": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+  "overrideFeatureInstallOrder": [
+    "ghcr.io/devcontainers/features/common-utils"
+  ],
   "customizations": {
     "vscode": {
       "extensions": [
@@ -34,6 +44,9 @@
           "source.addMissingImports",
           "source.fixAll.eslint"
         ],
+        "markdownlint.config": {
+          "MD033": false
+        },
         "[markdown]": {
           "editor.defaultFormatter": "yzhang.markdown-all-in-one",
           "editor.formatOnSave": true,
