@@ -12,7 +12,7 @@ updates:
     target-branch: 'develop'
     ignore:
       - dependency-name: 'node'
-        versions: ['19.x']
+        versions: ['~>19.0']
     labels:
       - 'docker'
       - 'dependencies'
