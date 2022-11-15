@@ -4,7 +4,9 @@ const createJestConfig = nextJest({
   dir: './',
 })
 
+/** @type {import('jest').Config} */
 const customJestConfig = {
+  preset: 'ts-jest',
   verbose: true,
   coverageThreshold: {
     global: {
