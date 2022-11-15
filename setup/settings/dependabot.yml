@@ -8,7 +8,6 @@ updates:
       timezone: 'Asia/Tokyo'
     commit-message:
       prefix: 'build'
-      include: 'scope'
     target-branch: 'develop'
     ignore:
       - dependency-name: 'node'
@@ -24,7 +23,6 @@ updates:
       timezone: 'Asia/Tokyo'
     commit-message:
       prefix: 'build'
-      include: 'scope'
     target-branch: 'develop'
     labels:
       - 'yarn'

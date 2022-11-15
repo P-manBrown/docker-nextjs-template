@@ -1,25 +1,27 @@
-set -e
+set -eu
 
 if [ ! -e /.dockerenv ]; then
 	printf '\e[31m%s\n\e[m' 'ERROR: This file must be run inside the container.'
 	exit 1
 fi
 
-set -ux
-
 # create project
+echo 'Creating your project...'
 PROJECT_NAME=$(cat ./.env | grep 'COMPOSE_PROJECT_NAME' | cut -f 2 -d '=')
-yarn create next-app $PROJECT_NAME --typescript
-mv ./$PROJECT_NAME/* ./$PROJECT_NAME/.[^\.]* ../
+yarn create next-app $PROJECT_NAME --typescript --no-eslint
+rm -rf ./$PROJECT_NAME/.git
+mv -f ./$PROJECT_NAME/* ./$PROJECT_NAME/.[^\.]* ./
 rmdir ./$PROJECT_NAME
 
 # install packages
+echo 'Installing packages...'
 ## Yarn
 yarn dlx @yarnpkg/sdks vscode
 yarn plugin import typescript
 ## commitlint
 yarn add --dev @commitlint/cli @commitlint/config-conventional
 ## ESLint
+yarn add --dev --exact eslint eslint-config-next
 yarn add --dev eslint-config-prettier eslint-plugin-unused-imports
 ## Jest
 yarn add --dev jest jest-environment-jsdom ts-jest
@@ -39,6 +41,7 @@ yarn dlx tailwindcss init -p
 yarn add --dev @testing-library/react @testing-library/jest-dom
 
 # setting up project
+echo 'Setting up your project...'
 ## create ./src
 mkdir ./src
 mv ./{pages,styles} ./src
@@ -52,17 +55,18 @@ code ./.gitignore
 cat $SETTINGS_DIR/package.json >> ./package.json
 code ./package.json
 if [[ "$PROJECT_NAME" =~ 'frontend' ]]; then
-	cp -f $SETTINGS_DIR/lefthook-project.yml ./lefthook.yml
-	cp -f $SETTINGS_DIR/dependabot.yml ./.github/dependabot.yml
+	mv -f $SETTINGS_DIR/lefthook-project.yml ./lefthook.yml
+	mv -f $SETTINGS_DIR/dependabot.yml ./.github/dependabot.yml
 fi
-rmdir $SETTINGS_DIR
+rm -rf $SETTINGS_DIR
 rm -f ./.eslintrc.json
-## add ignorepaths
-cat <-EOF >> ./.git/info/exclude
+# add ignorepaths
+cat <<-EOF >> ./.git/info/exclude
 	/.vscode/setting.json
 	/html_from_md
 	.DS_Store
 EOF
-cat ./.git/info/exclude
 
-rm -fr ./setup
+echo 'Done!!'
+
+rm -rf ./setup
