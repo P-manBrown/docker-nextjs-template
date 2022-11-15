@@ -16,6 +16,8 @@ set -u
 echo 'Setting up Git/GitHub...'
 GITHUB_USER_NAME="$(git config user.name)"
 if [[ "$TPL_PROJECT_NAME" =~ 'frontend' ]]; then
+## checkout develop branch
+	git checkout -b develop
 ## Protect main and develop branch
 	owner="$GITHUB_USER_NAME"
 	repo="$(basename -s .git `git remote get-url origin`)"
@@ -34,6 +36,7 @@ if [[ "$TPL_PROJECT_NAME" =~ 'frontend' ]]; then
 				pattern: $branch
 				requiresApprovingReviews: true
 				requiredApprovingReviewCount: $requiredReviews
+				dismissesStaleReviews: true
 				isAdminEnforced: true
 			}) { clientMutationId }
 		}' -f repositoryId="$repositoryId" -f branch="$b" -F requiredReviews=1
