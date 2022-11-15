@@ -4,44 +4,43 @@ pre-commit:
   commands:
     eslint:
       glob: 'src/*.{ts,tsx}'
-      run: >
+      run: >-
         docker compose run --rm --no-deps frontend bash -c "
         yarn eslint --fix {staged_files}
         "
       fail_text: 'Read the report above.'
     prettier:
-      run: >
+      run: >-
         docker compose run --rm --no-deps frontend bash -c "
-        yarn prettier --write --ignore-unknown {staged_files}
+        yarn prettier {staged_files} --write --ignore-unknown
         "
       fail_text: 'Read the report above.'
     markdownlint:
       glob: '*.md'
-      run: >
+      run: >-
         docker compose run --rm --no-deps frontend bash -c "
         yarn markdownlint --fix {staged_files}
         "
       fail_text: 'Read the report above.'
     protect-branch:
-      run: git branch --show-current | grep -Eqvx 'main|develop|^$'
-      fail_text: "ERROR: Do NOT commit directly to 'main' or 'develop' branch."
+      run: git branch --show-current | tee /dev/tty | grep -Eqvx 'main|develop'
+      fail_text: "ERROR: Do Not commit directly to 'main' or 'develop' branch."
 commit-msg:
   commands:
     commitlint:
-      run: >
+      run: >-
         docker compose run --rm --no-deps frontend bash -c "
         yarn commitlint --edit {1}
         "
       fail_text: 'Read the report above and .github/commit/COMMIT_CONVENTION.md'
 pre-push:
-  parallel: true
   commands:
     jest:
       files: git diff --name-only HEAD @{push} || git diff --name-only HEAD main
       glob: 'src/*.{ts,tsx}'
       env:
         NODE_ENV: test
-      run: >
+      run: >-
         docker compose run --rm --no-deps frontend bash -c "
         yarn jest --findRelatedTests {files}
         "
