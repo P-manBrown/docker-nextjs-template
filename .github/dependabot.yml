@@ -1,0 +1,18 @@
+version: 2
+updates:
+  - package-ecosystem: 'docker'
+    directory: '/'
+    schedule:
+      interval: 'daily'
+      time: '03:00'
+      timezone: 'Asia/Tokyo'
+    commit-message:
+      prefix: 'build'
+      include: 'scope'
+    target-branch: 'main'
+    ignore:
+      - dependency-name: 'node'
+        versions: ['19.x']
+    labels:
+      - 'docker'
+      - 'dependencies'
