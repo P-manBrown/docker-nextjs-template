@@ -85,7 +85,7 @@ gh repo clone <GitHubユーザー名/新規リポジトリ名>
 cd <作成されたディレクトリ>
 ```
 
-プロジェクト作成の準備するために以下のコマンドを実行します。  
+プロジェクト作成の準備をするために以下のコマンドを実行します。  
 
 <details>
   <summary>Zshの場合</summary>
@@ -118,7 +118,7 @@ bash setup/scripts/prepare-create-pj.sh
 
 書き換え後「Dev Containers」を起動します。  
 コマンドパレットで`Dev Containers: Reopen in Container`を実行します。  
-起動完了後プロジェクトを作成するためにコンテナ内で次のコマンドを実行します。  
+起動完了後コンテナ内で次のコマンドを実行します。  
 
 ```terminal
 bash setup/scripts/create-pj.sh
@@ -129,7 +129,7 @@ bash setup/scripts/create-pj.sh
 <details>
   <summary>「Dev Containers」を使用しない場合</summary>
 
-プロジェクトを作成するために以下のコマンドを実行します。  
+以下のコマンドを実行します。  
 
 ```terminal
 docker compose run --rm --no-deps frontend bash setup/scripts/create-pj.sh
