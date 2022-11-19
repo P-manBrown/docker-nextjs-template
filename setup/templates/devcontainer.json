@@ -44,6 +44,7 @@
           "source.addMissingImports",
           "source.fixAll.eslint"
         ],
+        "markdown.extension.toc.levels": "2..6",
         "markdownlint.config": {
           "MD033": false
         },
