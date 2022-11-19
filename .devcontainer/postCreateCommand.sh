@@ -13,9 +13,6 @@ sudo chown -R $(whoami) $HOME/bashlog
 mkdir -p $HOME/bashlog/script
 touch $HOME/bashlog/.bash_history
 
-# setting up 'commit template'
-git config --local commit.template ./.github/commit/gitmessage.txt
-
 # setting up 'GitHub CLI'
 gh auth login --with-token < ./.devcontainer/secrets/github-token.txt
 gh config set editor "code -w"

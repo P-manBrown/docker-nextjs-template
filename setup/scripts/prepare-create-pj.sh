@@ -47,6 +47,8 @@ fi
 ## enable to commit inside a container without 'Dev Containers'
 git config --local user.name "$GITHUB_USER_NAME"
 git config --local user.email "$(git config user.email)"
+# setting up 'commit message template'
+git config --local commit.template ./.github/commit/gitmessage.txt
 
 # Reflect project name
 echo "Reflecting your project name(${TPL_PROJECT_NAME})..."
