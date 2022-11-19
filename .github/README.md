@@ -1,20 +1,15 @@
 # Docker-Next.jsのテンプレートリポジトリ
 
-## 目次
-
-- [Docker-Next.jsのテンプレートリポジトリ](#docker-nextjsのテンプレートリポジトリ)
-  - [目次](#目次)
-  - [概要](#概要)
-    - [パッケージ](#パッケージ)
-    - [コミット](#コミット)
-    - [プロジェクト用の設定](#プロジェクト用の設定)
-  - [使用方法](#使用方法)
-
-## 概要
-
 Docker上のNext.js(TypeScript・Yarn v3)環境を構築するためのテンプレートリポジトリです。  
 
-### パッケージ
+— **目次** —
+
+- [パッケージ](#パッケージ)
+- [コミット](#コミット)
+- [プロジェクト用の設定](#プロジェクト用の設定)
+- [使用方法](#使用方法)
+
+## パッケージ
 
 プロジェクト作成時より以下のツールが使用できます。  
 
@@ -30,12 +25,12 @@ Docker上のNext.js(TypeScript・Yarn v3)環境を構築するためのテンプ
 Node.js環境がない場合にLefthookをホスト上で使用するには別途ローカルにインストールする必要があります。  
 [【evilmartians/lefthook】Install lefthook](https://github.com/evilmartians/lefthook/blob/master/docs/install.md)を参考にインストールしてください。  
 
-### コミット
+## コミット
 
 コミットメッセージは[COMMIT_CONVENTION.md](.github/commit/COMMIT_CONVENTION.md)に基づいて作成します。  
 これを容易にするため[gitmessage.txt](.github/commit/gitmessage.txt)をコミットメッセージのテンプレートとして使用します。  
 
-### プロジェクト用の設定
+## プロジェクト用の設定
 
 プロジェクト名に`frontend`という文言を含めると以下の機能が追加されます。  
 
@@ -62,7 +57,7 @@ gh repo create <新規リポジトリ名> --public --template P-manBrown/docker-
 以下のコマンドを実行して作成したリポジトリをローカルにクローンします。  
 
 <details>
-  <summary>gitコマンドの場合</summary>
+  <summary>gitコマンドの場合（クリックして展開）</summary>
 
 ```terminal
 git clone <URL or SSH key>
@@ -71,7 +66,7 @@ git clone <URL or SSH key>
 </details>
 
 <details>
-  <summary>ghコマンドの場合</summary>
+  <summary>ghコマンドの場合（クリックして展開）</summary>
 
 ```terminal
 gh repo clone <GitHubユーザー名/新規リポジトリ名>
@@ -88,7 +83,7 @@ cd <作成されたディレクトリ>
 プロジェクト作成の準備をするために以下のコマンドを実行します。  
 
 <details>
-  <summary>Zshの場合</summary>
+  <summary>Zshの場合（クリックして展開）</summary>
 
 ```terminal
 zsh setup/scripts/prepare-create-pj.sh
@@ -97,7 +92,7 @@ zsh setup/scripts/prepare-create-pj.sh
 </details>
 
 <details>
-  <summary>Bashの場合</summary>
+  <summary>Bashの場合（クリックして展開）</summary>
 
 ```terminal
 bash setup/scripts/prepare-create-pj.sh
@@ -108,7 +103,7 @@ bash setup/scripts/prepare-create-pj.sh
 プロジェクトを作成するために以下の手順を実行します。  
 
 <details>
-  <summary>「Dev Containers」を使用する場合</summary>
+  <summary>「Dev Containers」を使用する場合（クリックして展開）</summary>
 
 まず`.devcontainer/secrets/github-token.txt`を書き換えます。  
 ここで使用するPersonal Access Tokenには以下のスコープが必要です。  
@@ -127,7 +122,7 @@ bash setup/scripts/create-pj.sh
 </details>
 
 <details>
-  <summary>「Dev Containers」を使用しない場合</summary>
+  <summary>「Dev Containers」を使用しない場合（クリックして展開）</summary>
 
 以下のコマンドを実行します。  
 
@@ -142,7 +137,7 @@ docker compose run --rm --no-deps frontend bash setup/scripts/create-pj.sh
 最後にNext.jsが正常に起動できるか確認します。  
 
 <details>
-  <summary>「Dev Containers」を使用している場合</summary>
+  <summary>「Dev Containers」を使用している場合（クリックして展開）</summary>
 
 ```terminal
 yarn dev
@@ -151,7 +146,7 @@ yarn dev
 </details>
 
 <details>
-  <summary>「Dev Containers」を使用していない場合</summary>
+  <summary>「Dev Containers」を使用していない場合（クリックして展開）</summary>
 
 ```terminal
 docker compose up
