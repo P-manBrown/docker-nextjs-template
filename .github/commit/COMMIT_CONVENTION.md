@@ -16,7 +16,7 @@
 
 コミットメッセージのフォーマットは次のとおりです。
 
-```txt
+```example
 <type>[!]: <subject>
 
 [body]
@@ -46,7 +46,7 @@ typeは**必須**です。
 | test    | テストの追加や変更                              |
 | chore   | 上記のいずれにも該当しないもの                  |
 
-```txt
+```example
 : some message     # bad
 foo: some message  # bad
 FIX: some message  # bad
@@ -55,7 +55,7 @@ fix: some message  # good
 
 また破壊的変更の場合にはこれを強調するためにtypeの直後に`!`を記述できます。  
 
-```txt
+```example
 feat!: some message
 ```
 
@@ -70,7 +70,7 @@ subjectは**必須**です。
 - 文頭は小文字にする
 - 文末に`.`を記述しない
 
-```txt
+```example
 feat:                # bad
 feat: Some Message   # bad
 feat: SOME MESSAGE   # bad
@@ -88,7 +88,7 @@ bodyには変更の理由などsubjectの詳細情報を記述します。
 - `Sentence case`で記述する
 - 各行72文字までで記述する
 
-```txt
+```example
 fix: prevent racing of requests
 
 Introduce a request id and a reference to latest request. Dismiss
@@ -106,7 +106,7 @@ footerには[BREAKING CHANGE](#breaking-change)や[RevertするコミットのSH
 
 Issueへの参照を記述する場合には以下のようにします。  
 
-```txt
+```example
 fix: prevent racing of requests
 
 Introduce a request id and a reference to latest request. Dismiss
@@ -117,7 +117,7 @@ Closes #123
 
 複数のIssueへの参照を記述する場合には次のように`,`で区切ります。  
 
-```txt
+```example
 fix: prevent racing of requests
 
 Introduce a request id and a reference to latest request. Dismiss
@@ -135,7 +135,7 @@ Closes #123, #456, #789
 - bodyに取り消す理由を記述する
 - footerに取り消すコミットのSHAを記述する
 
-```txt
+```example
 revert: some message
 
 A clear description of the reason for reverting the commit message.
@@ -152,17 +152,17 @@ Refs: 676104e, a215868
 
 `BREAKING CHANGE:` はどのtypeのコミットにも含められます。  
 
-```txt
+```example
 chore!: drop support for Node 6
 ```
 
-```txt
+```example
 chore: drop support for Node 6
 
 BREAKING CHANGE: use JavaScript features not available in Node 6.
 ```
 
-```txt
+```example
 chore!: drop support for Node 6
 
 BREAKING CHANGE: use JavaScript features not available in Node 6.

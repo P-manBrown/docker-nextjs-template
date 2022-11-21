@@ -19,7 +19,7 @@ pre-commit:
       glob: '*.md'
       run: >-
         docker compose run --rm --no-deps frontend bash -c "
-        yarn markdownlint --fix {staged_files}
+        yarn markdownlint --fix --disable MD013 -- {staged_files}
         "
       fail_text: 'Read the report above.'
 commit-msg:
