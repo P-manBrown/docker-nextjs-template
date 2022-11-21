@@ -17,6 +17,7 @@ Docker上のNext.js(TypeScript・Yarn v3)環境を構築するためのテンプ
 - ESLint
 - Jest
 - Lefthook
+- markdownlint-cli
 - Prettier
 - Storybook
 - Tailwind CSS
@@ -131,8 +132,6 @@ docker compose run --rm --no-deps frontend bash setup/scripts/create-pj.sh
 ```
 
 </details>
-
-`./.gitignore`および`./package.json`の内容を整理します。  
 
 最後にNext.jsが正常に起動できるか確認します。  
 

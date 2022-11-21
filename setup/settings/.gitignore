@@ -1,4 +1,3 @@
-# 以下settingsから追記
 .yarn/*
 !.yarn/cache
 !.yarn/patches
@@ -6,4 +5,3 @@
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
-/node_modules

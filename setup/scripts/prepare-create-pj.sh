@@ -5,17 +5,17 @@ if [ -e /.dockerenv ]; then
 	exit 1
 fi
 
-if [ -z "$TPL_PROJECT_NAME" ]; then
+sed -n 3p ./article.md | sed -e 's/（ //; s/）//' | pbcopy
+if [ -z "$PROJECT_NAME" ]; then
 	echo -n 'What is your project named? > '
 	read PROJECT_NAME
-	export TPL_PROJECT_NAME=$PROJECT_NAME
 fi
 
 # Setting up Git/GitHub
 set -u
 echo 'Setting up Git/GitHub...'
 GITHUB_USER_NAME="$(git config user.name)"
-if [[ "$TPL_PROJECT_NAME" =~ 'frontend' ]]; then
+if [[ "$PROJECT_NAME" =~ 'frontend' ]]; then
 ## checkout develop branch
 	git checkout -b develop
 ## Protect main and develop branch
@@ -42,7 +42,7 @@ if [[ "$TPL_PROJECT_NAME" =~ 'frontend' ]]; then
 		}' -f repositoryId="$repositoryId" -f branch="$b" -F requiredReviews=1
 	done
 ## enable to automatically delete head branches
-	gh repo edit $GITHUB_USER_NAME/$TPL_PROJECT_NAME --delete-branch-on-merge
+	gh repo edit $GITHUB_USER_NAME/$PROJECT_NAME --delete-branch-on-merge
 fi
 ## enable to commit inside a container without 'Dev Containers'
 git config --local user.name "$GITHUB_USER_NAME"
@@ -51,14 +51,8 @@ git config --local user.email "$(git config user.email)"
 git config --local commit.template ./.github/commit/gitmessage.txt
 
 # Reflect project name
-echo "Reflecting your project name(${TPL_PROJECT_NAME})..."
-TEMPLATES_DIR='./setup/templates'
-export DOLLAR='$'
-envsubst < $TEMPLATES_DIR/.env > ./.env
-envsubst < $TEMPLATES_DIR/.yarnrc.yml > ./.yarnrc.yml
-envsubst < $TEMPLATES_DIR/devcontainer.json > ./.devcontainer/devcontainer.json
-envsubst < $TEMPLATES_DIR/package.json > ./package.json
-rm -rf $TEMPLATES_DIR
+echo "Reflecting your project name($PROJECT_NAME)..."
+grep -lr 'myapp-frontend' . | xargs sed -i "s/myapp-frontend/$PROJECT_NAME/g"
 
 # Create secret file
 echo 'Copying secret files...'

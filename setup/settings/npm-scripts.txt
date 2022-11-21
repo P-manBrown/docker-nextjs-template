@@ -1,0 +1,5 @@
+"dev": "NODE_OPTIONS='--inspect --require ./.pnp.cjs' next dev",
+"lint": "next lint --dir src",
+"lint-fix": "next lint --dir src --fix",
+"format": "prettier '**/*' --write --ignore-unknown",
+"test": "NODE_ENV=test jest --watch",

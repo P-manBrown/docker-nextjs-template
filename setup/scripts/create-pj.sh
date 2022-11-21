@@ -5,9 +5,12 @@ if [ ! -e /.dockerenv ]; then
 	exit 1
 fi
 
+# used at 'mv setting files' section
+PACKAGE_MANAGER="$(grep '"packageManager"' ./package.json)"
+
 # create project
 echo 'Creating your project...'
-PROJECT_NAME=$(cat ./.env | grep 'COMPOSE_PROJECT_NAME' | cut -f 2 -d '=')
+PROJECT_NAME="$(grep 'COMPOSE_PROJECT_NAME' ./.env | cut -f 2 -d '=')"
 yarn create next-app $PROJECT_NAME --typescript --no-eslint
 rm -rf ./$PROJECT_NAME/.git
 mv -f ./$PROJECT_NAME/* ./$PROJECT_NAME/.[^\.]* ./
@@ -28,6 +31,8 @@ yarn add --dev jest jest-environment-jsdom ts-jest
 ## Lefthook
 yarn add --dev @evilmartians/lefthook
 yarn lefthook install
+## markdownlint-cli
+yarn add --dev markdownlint-cli
 ## Prettier
 yarn add --dev --exact prettier
 yarn add --dev prettier-plugin-tailwindcss
@@ -50,13 +55,26 @@ SETTINGS_DIR='./setup/settings'
 mv -f $SETTINGS_DIR/settings.json ./.vscode/settings.json
 mv -f $SETTINGS_DIR/globals.css ./src/styles/globals.css
 mv -f $SETTINGS_DIR/tsconfig.json ./tsconfig.json
-cat $SETTINGS_DIR/.gitignore >> ./.gitignore
+sed -i -e "/.pnp/d; /# dependencies/r $SETTINGS_DIR/.gitignore" ./.gitignore
+npm_script_names=($(tac ./setup/settings/npm-scripts.txt | cut -f 1 -d ':'))
+for n in "${npm_script_names[@]}"
+do
+	npm_script="$(grep "$n" ./setup/settings/npm-scripts.txt)"
+	if grep -q "$n" ./package.json; then
+		sed -i "/$n/c \    $npm_script" ./package.json
+	else
+		sed -i "/\"lint\"/a \    $npm_script" ./package.json
+	fi
+done
+sed -i -e "s/  }$/  },/" -e "/^}$/i \\$PACKAGE_MANAGER" ./package.json
 code ./.gitignore
-cat $SETTINGS_DIR/package.json >> ./package.json
 code ./package.json
 if [[ "$PROJECT_NAME" =~ 'frontend' ]]; then
-	mv -f $SETTINGS_DIR/lefthook-project.yml ./lefthook.yml
-	mv -f $SETTINGS_DIR/dependabot.yml ./.github/dependabot.yml
+	sed -i \
+		'/^commit-msg:$/e < $SETTINGS_DIR/lefthook/protect-branch.txt' lefthook.yml
+	cat $SETTINGS_DIR/lefthook/cleanup-branches.txt >> lefthook.yml
+	sed -i 's/main/develop/' ./.github/dependabot.yml
+	cat $SETTINGS_DIR/dependabot-npm.txt >> ./.github/dependabot.yml
 fi
 rm -rf $SETTINGS_DIR
 rm -f ./.eslintrc.json
