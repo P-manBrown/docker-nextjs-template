@@ -52,12 +52,13 @@ git config --local commit.template ./.github/commit/gitmessage.txt
 
 # Reflect project name
 echo "Reflecting your project name($PROJECT_NAME)..."
-grep -lr 'myapp-frontend' . | xargs sed -i "s/myapp-frontend/$PROJECT_NAME/g"
+grep -lr 'myapp-frontend' . | xargs sed -i '' "s/myapp-frontend/$PROJECT_NAME/g"
 
 # Create secret file
 echo 'Copying secret files...'
 cd ./.devcontainer/secrets
 cp ./github-token.txt.template ./github-token.txt
+code ./github-token.txt
 cd ../../
 printf '\x1b[1m%s\e[m\n' \
 	'Overwrite [.devcontainer/secrets/github-token.txt] with your GitHub PAT!'
