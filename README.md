@@ -70,7 +70,7 @@ git clone <URL or SSH key>
   <summary>ghコマンドの場合（クリックして展開）</summary>
 
 ```terminal
-gh repo clone <GitHubユーザー名/新規リポジトリ名>
+gh repo clone <GitHubユーザー名>/<新規リポジトリ名>
 ```
 
 </details>
