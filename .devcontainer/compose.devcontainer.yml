@@ -3,5 +3,7 @@ services:
     volumes:
       - bashlog:/home/${FRONTEND_USER_NAME}/bashlog
     command: /bin/sh -c "while sleep 1000; do :; done"
+    env_file:
+      - ./.devcontainer/environment/gh-token.env
 volumes:
   bashlog:

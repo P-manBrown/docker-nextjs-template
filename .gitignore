@@ -1,2 +1,0 @@
-/.devcontainer/secrets/*
-!/.devcontainer/secrets/*.template

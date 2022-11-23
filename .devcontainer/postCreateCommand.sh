@@ -12,9 +12,12 @@ sudo chown -R $(whoami) $HOME/bashlog
 mkdir -p $HOME/bashlog/script
 touch $HOME/bashlog/.bash_history
 
+echo 'Setting up Git...'
+git config --global core.editor 'code --wait'
+git config --local commit.template ./.github/commit/gitmessage.txt
+
 echo 'Setting up GitHub CLI...'
-gh auth login --with-token < ./.devcontainer/secrets/github-token.txt
-gh config set editor 'code -w'
+gh config set editor 'code --wait'
 
 copy_and_ignore() {
 	source_file="$1"

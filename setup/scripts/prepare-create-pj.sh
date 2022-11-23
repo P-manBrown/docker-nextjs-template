@@ -55,13 +55,13 @@ echo "Reflecting your project name($PROJECT_NAME)..."
 grep -lr 'myapp-frontend' . | xargs sed -i '' "s/myapp-frontend/$PROJECT_NAME/g"
 
 # Create secret file
-echo 'Copying secret files...'
-cd ./.devcontainer/secrets
-cp ./github-token.txt.template ./github-token.txt
-code ./github-token.txt
+echo 'Copying template files...'
+cd ./.devcontainer/environment
+cp ./gh-token.env.template ./gh-token.env
+code ./gh-token.env
 cd ../../
 printf '\x1b[1m%s\e[m\n' \
-	'Overwrite [.devcontainer/secrets/github-token.txt] with your GitHub PAT!'
+	'Overwrite [.devcontainer/environment/gh-token.env] with your GitHub PAT!'
 
 rm -f ./setup/scripts/prepare-create-pj.sh
 
