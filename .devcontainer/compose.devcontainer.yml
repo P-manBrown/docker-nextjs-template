@@ -1,9 +1,9 @@
 services:
   frontend:
     volumes:
-      - bashlog:/home/${FRONTEND_USER_NAME}/bashlog
+      - shell-log:/home/${FRONTEND_USER_NAME}/shell_log
     command: /bin/sh -c "while sleep 1000; do :; done"
     env_file:
       - ./.devcontainer/environment/gh-token.env
 volumes:
-  bashlog:
+  shell-log:

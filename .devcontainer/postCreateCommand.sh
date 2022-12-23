@@ -1,41 +1,28 @@
+#!/usr/bin/env bash
 set -eu
 
-echo 'Setting up Bash...'
-cat <<-'EOF' >> $HOME/.bashrc
-	if [ "$SHLVL" = 2 ]; then
-	  script --flush ~/bashlog/script/`date "+%Y%m%d%H%M%S"`.log
+echo 'Setting up Shell...'
+cat <<-'EOF' | tee -a "${HOME}/.bashrc" >> "${HOME}/.zshrc"
+	export HISTFILE="${HOME}/shell_log/.${SHELL##*/}_history"
+	if [[ ${SHLVL} -eq 2 ]]; then
+	  mkdir -p "${HOME}/shell_log/${SHELL##*/}"
+	  create_date="$(date '+%Y%m%d%H%M%S')"
+	  script -f "${HOME}/shell_log/${SHELL##*/}/${create_date}.log"
 	fi
-	export PROMPT_COMMAND='history -a'
-	export HISTFILE=~/bashlog/.bash_history
 EOF
-sudo chown -R $(whoami) $HOME/bashlog
-mkdir -p $HOME/bashlog/script
-touch $HOME/bashlog/.bash_history
+echo "export PROMPT_COMMAND='history -a && precmd'" >> "${HOME}/.bashrc"
+git clone \
+	https://github.com/zsh-users/zsh-autosuggestions \
+	"${HOME}/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
+oh_my_plugins="(gh git yarn zsh-autosuggestions)"
+sed -i "s/^plugins=(.*)/plugins=${oh_my_plugins}/" "${HOME}/.zshrc"
+sudo chown -R "${USER}" "${HOME}/shell_log"
 
 echo 'Setting up Git...'
 git config --global core.editor 'code --wait'
-git config --local commit.template ./.github/commit/gitmessage.txt
 
 echo 'Setting up GitHub CLI...'
 gh config set editor 'code --wait'
 
-copy_and_ignore() {
-	source_file="$1"
-	target_dir="$2"
-	file_name=$(basename "$source_file")
-	ignore_path=$(
-		echo "$target_dir/$file_name" \
-		| sed -e "s:^./:/:; /^[^/]/s:^:/:; /\/\//s:^//:/:"
-	)
-	if ! grep -qx "$ignore_path" ./.git/info/exclude; then
-		echo "$ignore_path" >> ./.git/info/exclude
-	fi
-	cp --update "$source_file" "$target_dir"
-}
-
-echo 'Setting up VSCode...'
-copy_and_ignore ./.devcontainer/vscode/launch.json ./.vscode
-
 echo 'Setting up Lefthook...'
-copy_and_ignore ./.devcontainer/lefthook/lefthook-local.yml ./
 yarn lefthook install

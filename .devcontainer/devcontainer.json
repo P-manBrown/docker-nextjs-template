@@ -6,7 +6,8 @@
   "postCreateCommand": "bash ./.devcontainer/postCreateCommand.sh",
   "features": {
     "ghcr.io/devcontainers/features/common-utils:1": {
-      "username": "node"
+      "configureZshAsDefaultShell": true,
+      "upgradePackages": false
     },
     "ghcr.io/P-manBrown/devcontainer-features/git-from-src-fast:1": {},
     "ghcr.io/devcontainers/features/github-cli:1": {}
