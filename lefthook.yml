@@ -4,31 +4,19 @@ pre-commit:
   commands:
     eslint:
       glob: 'src/*.{ts,tsx}'
-      run: >-
-        docker compose run --rm --no-deps frontend bash -c "
-        yarn eslint --fix {staged_files}
-        "
+      run: yarn eslint --fix {staged_files}
       fail_text: 'Read the report above.'
     prettier:
-      run: >-
-        docker compose run --rm --no-deps frontend bash -c "
-        yarn prettier {staged_files} --write --ignore-unknown
-        "
+      run: yarn prettier {staged_files} --write --ignore-unknown
       fail_text: 'Read the report above.'
     markdownlint:
       glob: '*.md'
-      run: >-
-        docker compose run --rm --no-deps frontend bash -c "
-        yarn markdownlint --fix --disable MD013 -- {staged_files}
-        "
+      run: yarn markdownlint --fix --disable MD013 -- {staged_files}
       fail_text: 'Read the report above.'
 commit-msg:
   commands:
     commitlint:
-      run: >-
-        docker compose run --rm --no-deps frontend bash -c "
-        yarn commitlint --edit {1}
-        "
+      run: yarn commitlint --edit {1}
       fail_text: 'Read the report above and .github/commit/COMMIT_CONVENTION.md'
 pre-push:
   commands:
@@ -37,8 +25,5 @@ pre-push:
       glob: 'src/*.{ts,tsx}'
       env:
         NODE_ENV: test
-      run: >-
-        docker compose run --rm --no-deps frontend bash -c "
-        yarn jest --findRelatedTests {files}
-        "
+      run: yarn jest --findRelatedTests {files}
       fail_text: 'Read the report above.'

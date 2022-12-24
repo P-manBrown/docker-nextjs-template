@@ -1,0 +1,26 @@
+common:
+  create-container: &create-container
+    create-container:
+      run: docker compose create frontend
+  docker-runer: &docker-runner
+    docker compose run --rm --no-deps frontend sh -c "{cmd}"
+
+pre-commit:
+  commands:
+    <<: *create-container
+    eslint:
+      run: *docker-runner
+    prettier:
+      run: *docker-runner
+    markdownlint:
+      run: *docker-runner
+commit-msg:
+  commands:
+    <<: *create-container
+    commitlint:
+      run: *docker-runner
+pre-push:
+  commands:
+    <<: *create-container
+    jest:
+      run: *docker-runner
