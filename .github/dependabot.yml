@@ -12,6 +12,12 @@ updates:
     ignore:
       - dependency-name: 'node'
         versions: ['~>19.0']
-    labels:
-      - 'docker'
-      - 'dependencies'
+  - package-ecosystem: 'npm'
+    directory: '/'
+    schedule:
+      interval: 'daily'
+      time: '03:00'
+      timezone: 'Asia/Tokyo'
+    commit-message:
+      prefix: 'build'
+    target-branch: 'main'
