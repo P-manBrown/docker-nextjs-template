@@ -1,68 +1,63 @@
-set -e
+#!/usr/bin/env bash
+set -eu
 
-if [ -e /.dockerenv ]; then
-	printf '\e[31m%s\n\e[m' 'ERROR: This file must be run on the host.'
+err() {
+	printf '\e[31m%s\n\e[m' "ERROR: $*" >&2
+}
+
+if [[ -e /.dockerenv ]]; then
+	err 'This file must be run on the host.'
 	exit 1
 fi
 
-sed -n 3p ./article.md | sed -e 's/（ //; s/）//' | pbcopy
-if [ -z "$PROJECT_NAME" ]; then
-	echo -n 'What is your project named? > '
-	read PROJECT_NAME
+if ! git branch | grep -q 'main' ; then
+	err "Change the default branch to 'main'."
+	exit 1
 fi
 
-# Setting up Git/GitHub
-set -u
-echo 'Setting up Git/GitHub...'
-GITHUB_USER_NAME="$(git config user.name)"
-if [[ "$PROJECT_NAME" =~ 'frontend' ]]; then
-## checkout develop branch
-	git checkout -b develop
-## Protect main and develop branch
-	owner="$GITHUB_USER_NAME"
-	repo="$(basename -s .git `git remote get-url origin`)"
-	repositoryId="$(
-		gh api graphql \
-		-f query='{repository(owner:"'$owner'",name:"'$repo'"){id}}' \
-		-q .data.repository.id
-	)"
-	protected_branchs=(main develop)
-	for b in "${protected_branchs[@]}"
-	do
-		gh api graphql -f query='
-		mutation($repositoryId:ID!,$branch:String!,$requiredReviews:Int!) {
-			createBranchProtectionRule(input: {
-				repositoryId: $repositoryId
-				pattern: $branch
-				requiresApprovingReviews: true
-				requiredApprovingReviewCount: $requiredReviews
-				dismissesStaleReviews: true
-				isAdminEnforced: true
-			}) { clientMutationId }
-		}' -f repositoryId="$repositoryId" -f branch="$b" -F requiredReviews=1
-	done
-## enable to automatically delete head branches
-	gh repo edit $GITHUB_USER_NAME/$PROJECT_NAME --delete-branch-on-merge
+# Set up Git/GitHub
+echo 'Setting up GitHub...'
+## Enable to automatically delete head branches
+github_user="$(git config --global --get user.name)"
+repo_name="$(basename -s .git "$(git remote get-url origin)")"
+gh repo edit "${github_user}/${repo_name}" --delete-branch-on-merge
+echo 'Setting up Git...'
+## Reflect global ignore
+gitignore_global="${XDG_CONFIG_HOME:-${HOME}}/.config/git/ignore"
+if [[ ! -e "${gitignore_global}" ]]; then
+	set +e
+	gitignore_global="$(git config --get core.excludesfile)"
+	set -e
 fi
-## enable to commit inside a container without 'Dev Containers'
-git config --local user.name "$GITHUB_USER_NAME"
-git config --local user.email "$(git config user.email)"
-# setting up 'commit message template'
+if [[ -n "${gitignore_global}" ]]; then
+	git_exclude="$(git rev-parse --git-path info/exclude)"
+	cat "${gitignore_global}" >> "${git_exclude}"
+fi
+## Enable to commit inside a container without 'Dev Containers'
+git config --local user.name "${github_user}"
+git config --local user.email "$(git config --global --get user.email)"
+## Set up 'commit message template'
 git config --local commit.template ./.github/commit/gitmessage.txt
 
 # Reflect project name
-echo "Reflecting your project name($PROJECT_NAME)..."
-grep -lr 'myapp-frontend' . | xargs sed -i '' "s/myapp-frontend/$PROJECT_NAME/g"
+set +u
+if [[ -z "${project_name}" ]]; then
+	echo -n 'What is your project named? > '
+	read -r project_name
+fi
+set -u
+echo "Reflecting your project name (${project_name})..."
+grep -lr 'myapp-frontend' . \
+	| LC_ALL=C xargs sed -i '' "s/myapp-frontend/${project_name}/g"
 
-# Create secret file
+# Copy template file
 echo 'Copying template files...'
 cd ./.devcontainer/environment
 cp ./gh-token.env.template ./gh-token.env
-code ./gh-token.env
 cd ../../
 printf '\x1b[1m%s\e[m\n' \
 	'Overwrite [.devcontainer/environment/gh-token.env] with your GitHub PAT!'
 
-rm -f ./setup/scripts/prepare-create-pj.sh
+rm ./setup/scripts/prepare-create-pj.sh
 
 echo 'Done!!'
