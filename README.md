@@ -1,17 +1,21 @@
-# Docker-Next.jsのテンプレートリポジトリ
+# Docker-Next.jsテンプレートリポジトリ
 
 Docker上のNext.js(TypeScript・Yarn v3)環境を構築するためのテンプレートリポジトリです。  
 
 — **目次** —
 
-- [パッケージ](#パッケージ)
-- [コミット](#コミット)
-- [プロジェクト用の設定](#プロジェクト用の設定)
+- [概要](#概要)
+  - [パッケージ](#パッケージ)
+  - [コミット](#コミット)
+  - [ブランチ](#ブランチ)
+  - [プロジェクト用の設定](#プロジェクト用の設定)
 - [使用方法](#使用方法)
 
-## パッケージ
+## 概要
 
-プロジェクト作成時より以下のツールが使用できます。  
+### パッケージ
+
+プロジェクト作成時より以下のパッケージが使用できます。  
 
 - commitlint
 - ESLint
@@ -23,29 +27,32 @@ Docker上のNext.js(TypeScript・Yarn v3)環境を構築するためのテンプ
 - Tailwind CSS
 - Testing Library
 
-Node.js環境がない場合にLefthookをホスト上で使用するには別途ローカルにインストールする必要があります。  
+Lefthookをホストで使用するには別途ローカルにインストールする必要があります。  
 [【evilmartians/lefthook】Install lefthook](https://github.com/evilmartians/lefthook/blob/master/docs/install.md)を参考にインストールしてください。  
 
-## コミット
+Dockerベースイメージおよびパッケージが更新可能な場合にDependabotによりプルリクエストが発行されます。  
+
+### コミット
 
 コミットメッセージは[COMMIT_CONVENTION.md](.github/commit/COMMIT_CONVENTION.md)に基づいて作成します。  
 これを容易にするため[gitmessage.txt](.github/commit/gitmessage.txt)をコミットメッセージのテンプレートとして使用します。  
 
-## プロジェクト用の設定
+### ブランチ
 
-プロジェクト名に`frontend`という文言を含めると以下の機能が追加されます。  
+マージされたリモートブランチは自動で削除されるように設定されます。  
 
-- ブランチの作成と移動  
-  `develop`ブランチが作成されプロジェクト作成完了までの処理が`develop`ブランチで実行されます。  
+### プロジェクト用の設定
+
+プロジェクト名に`frontend`という文言を含めると以下の機能が有効になります。  
+
+- ブランチの作成  
+  `develop`ブランチが作成されます。  
 - `main`と`develop`が保護ブランチになる  
   上記ブランチへ`marge`する際にプルリクエストに対し1件以上の承認が必要になります。  
-  また新しいコミットが`push`されたときに古いプルリクエストの承認が却下されるようになります。
-- マージされたブランチの自動削除  
-  マージされたリモートブランチが自動で削除されるようになります。  
+  また新しいコミットが`push`されたときに古いプルリクエストの承認が却下されるようになります。  
 - Lefthookの実行コマンド追加  
-  `lefthook.yml`が[こちらの内容](./setup/settings/lefthook-project.yml)に変更されます。  
-- Dockerのベースイメージやパッケージの自動更新  
-  Dependabotが有効になり上記が更新可能な場合に更新のプルリクエストが平日3:00に自動発行されます。  
+  [lefthook.yml](lefthook.yml)の`protect-branch`が有効になります。  
+  （プロジェクト名に`frontend`が含まれていない場合には`protect-branch`は削除されます。）  
 
 ## 使用方法
 
@@ -55,7 +62,7 @@ Node.js環境がない場合にLefthookをホスト上で使用するには別�
 gh repo create <新規リポジトリ名> --public --template P-manBrown/docker-nextjs-template
 ```
 
-以下のコマンドを実行して作成したリポジトリをローカルにクローンします。  
+次のコマンドを実行して作成したリポジトリをローカルにクローンします。  
 
 <details>
   <summary>gitコマンドの場合（クリックして展開）</summary>
@@ -81,32 +88,19 @@ gh repo clone <GitHubユーザー名>/<新規リポジトリ名>
 cd <作成されたディレクトリ>
 ```
 
-プロジェクト作成の準備をするために以下のコマンドを実行します。  
-
-<details>
-  <summary>Zshの場合（クリックして展開）</summary>
-
-```terminal
-zsh setup/scripts/prepare-create-pj.sh
-```
-
-</details>
-
-<details>
-  <summary>Bashの場合（クリックして展開）</summary>
+プロジェクト作成の準備をするために次のコマンドを実行します。  
 
 ```terminal
 bash setup/scripts/prepare-create-pj.sh
 ```
-
-</details>
 
 プロジェクトを作成するために以下の手順を実行します。  
 
 <details>
   <summary>「Dev Containers」を使用する場合（クリックして展開）</summary>
 
-まず`.devcontainer/secrets/github-token.txt`を書き換えます。  
+`.devcontainer/environment/gh-token.env`を書き換えます。
+
 ここで使用するPersonal Access Tokenには以下のスコープが必要です。  
 
 - repo
@@ -114,7 +108,7 @@ bash setup/scripts/prepare-create-pj.sh
 
 書き換え後「Dev Containers」を起動します。  
 コマンドパレットで`Dev Containers: Reopen in Container`を実行します。  
-起動完了後コンテナ内で次のコマンドを実行します。  
+起動完了後コンテナ内で次のコマンドを実行してNext.jsアプリケーションを作成します。  
 
 ```terminal
 bash setup/scripts/create-pj.sh
@@ -125,30 +119,24 @@ bash setup/scripts/create-pj.sh
 <details>
   <summary>「Dev Containers」を使用しない場合（クリックして展開）</summary>
 
-以下のコマンドを実行します。  
+LefthookをDockerに対応させるため[lefthook-local.yml](setup/config/lefthook-local.yml)をプロジェクトルートに移動します。  
 
 ```terminal
-docker compose run --rm --no-deps frontend bash setup/scripts/create-pj.sh
+mv setup/config/lefthook-local.yml ./
+```
+
+次のコマンドを実行してNext.jsアプリケーションを作成します。  
+
+```terminal
+docker compose run --rm --no-deps api bash setup/scripts/create-pj.sh
 ```
 
 </details>
 
-最後にNext.jsが正常に起動できるか確認します。  
+次に`README.md`を作成します。  
 
-<details>
-  <summary>「Dev Containers」を使用している場合（クリックして展開）</summary>
-
-```terminal
-yarn dev
-```
-
-</details>
-
-<details>
-  <summary>「Dev Containers」を使用していない場合（クリックして展開）</summary>
+作成後に次のコマンドを実行して「Initial commit」を再作成します。  
 
 ```terminal
-docker compose up
+bash setup/scripts/initial-commit.sh
 ```
-
-</details>
