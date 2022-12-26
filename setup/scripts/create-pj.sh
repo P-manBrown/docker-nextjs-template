@@ -21,6 +21,8 @@ rmdir "./${PROJECT_NAME}"
 
 # adding file contents to the index
 echo 'Adding file contents to the index...'
+repo_root="$(git rev-parse --show-toplevel)"
+git config --global --add safe.directory "${repo_root}"
 git add .
 
 # install packages
@@ -54,6 +56,18 @@ yarn add --dev @testing-library/react @testing-library/jest-dom
 
 # setting up project
 echo 'Setting up your project...'
+## setting up Lefthook
+yarn lefthook install
+post_create_command='.devcontainer/postCreateCommand.sh'
+set +u
+if [[ "${REMOTE_CONTAINERS}" == 'true' ]]; then
+	echo '' >> "${post_create_command}"
+	cat <<-EOF >> "${post_create_command}"
+		echo 'Setting up Lefthook...'
+		bundle exec lefthook install
+	EOF
+fi
+set -u
 ## create ./src
 mkdir ./src
 mv ./{pages,styles} ./src
