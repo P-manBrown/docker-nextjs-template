@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 set -eu
 
-printenv
-
 echo 'Setting up Shell...'
 cat <<-'EOF' | tee -a "${HOME}/.bashrc" >> "${HOME}/.zshrc"
 	export SHELL="$(readlink "/proc/$$/exe")"

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -eu
 
 err() {
@@ -12,6 +12,10 @@ fi
 
 PROJECT_NAME="$(grep 'COMPOSE_PROJECT_NAME' ./.env | cut -f 2 -d '=')"
 PACKAGE_MANAGER="$(grep '"packageManager"' ./package.json)"
+
+# update Yarn to the latest version
+echo 'Updating Yarn to the latest version...'
+yarn set version stable
 
 # create project
 echo 'Creating your project...'

@@ -20,7 +20,7 @@ echo 'Setting up GitHub...'
 ## Enable to automatically delete head branches
 github_user="$(git config --get user.name)"
 repo_name="$(basename -s .git "$(git remote get-url origin)")"
-gh repo edit "${github_user}/${repo_name}" --delete-branch-on-merge
+gh repo edit "${github_user}"/"${repo_name}" --delete-branch-on-merge
 echo 'Setting up Git...'
 ## Reflect global ignore
 gitignore_global="${XDG_CONFIG_HOME:-${HOME}}/.config/git/ignore"
