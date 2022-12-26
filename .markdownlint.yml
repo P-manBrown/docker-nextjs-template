@@ -1,0 +1,11 @@
+default: true
+# exclude rules
+MD002: false
+MD006: false
+MD013: false
+MD033: false
+# override parameters
+MD007:
+  indent: 2
+MD009:
+  br_spaces: 2

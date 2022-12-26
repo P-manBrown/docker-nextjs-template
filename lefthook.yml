@@ -11,7 +11,7 @@ pre-commit:
       fail_text: 'Read the report above.'
     markdownlint:
       glob: '*.md'
-      run: yarn markdownlint --fix --disable MD013 -- {staged_files}
+      run: yarn markdownlint --fix {staged_files}
       fail_text: 'Read the report above.'
 commit-msg:
   commands:
