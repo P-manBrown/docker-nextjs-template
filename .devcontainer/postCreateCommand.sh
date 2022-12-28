@@ -3,7 +3,7 @@ set -eu
 
 echo 'Setting up Shell...'
 cat <<-'EOF' | tee -a "${HOME}/.bashrc" >> "${HOME}/.zshrc"
-	export SHELL="$(readlink "/proc/$$/exe")"
+	SHELL="$(readlink "/proc/$$/exe")"
 	export HISTFILE="${HOME}/shell_log/.${SHELL##*/}_history"
 	if [[ ${SHLVL} -eq 2 ]]; then
 	  mkdir -p "${HOME}/shell_log/${SHELL##*/}"
@@ -11,7 +11,7 @@ cat <<-'EOF' | tee -a "${HOME}/.bashrc" >> "${HOME}/.zshrc"
 	  script -f "${HOME}/shell_log/${SHELL##*/}/${create_date}.log"
 	fi
 EOF
-echo "export PROMPT_COMMAND='history -a && precmd'" >> "${HOME}/.bashrc"
+echo "export PROMPT_COMMAND='history -a'" >> "${HOME}/.bashrc"
 git clone \
 	https://github.com/zsh-users/zsh-autosuggestions \
 	"${HOME}/.oh-my-zsh/custom/plugins/zsh-autosuggestions"

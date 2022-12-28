@@ -5,6 +5,11 @@ err() {
 	printf '\e[31m%s\n\e[m' "ERROR: $*" >&2
 }
 
+if ! ps -p "$$" | grep -q 'bash'; then
+	err 'This file must be run with Bash.'
+	exit 1
+fi
+
 if [[ ! -e ./README.md ]]; then
 	err 'Create ./README.md before running this file.'
 	exit 1
@@ -13,7 +18,7 @@ fi
 echo 'Running pre-commit...'
 git add .
 if [[ -e /.dockerenv ]]; then
-	LEFTHOOK_EXCLUDE=protect-branch bundle exec lefthook run pre-commit
+	LEFTHOOK_EXCLUDE=protect-branch yarn lefthook run pre-commit
 else
 	LEFTHOOK_EXCLUDE=protect-branch lefthook run pre-commit
 fi

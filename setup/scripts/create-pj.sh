@@ -10,6 +10,11 @@ if [[ ! -e /.dockerenv ]]; then
 	exit 1
 fi
 
+if ! ps -p "$$" | grep -q 'bash'; then
+	err 'This file must be run with Bash.'
+	exit 1
+fi
+
 PROJECT_NAME="$(grep 'COMPOSE_PROJECT_NAME' ./.env | cut -f 2 -d '=')"
 PACKAGE_MANAGER="$(grep '"packageManager"' ./package.json)"
 
@@ -68,7 +73,7 @@ if [[ "${REMOTE_CONTAINERS}" == 'true' ]]; then
 	echo '' >> "${post_create_command}"
 	cat <<-EOF >> "${post_create_command}"
 		echo 'Setting up Lefthook...'
-		bundle exec lefthook install
+		yarn lefthook install
 	EOF
 fi
 set -u
@@ -95,6 +100,33 @@ if [[ "${PROJECT_NAME}" == *'frontend'* ]]; then
 else
 	sed -i '/protect-branch:$/,/fail_text:.*branch\."$/d' ./lefthook.yml
 fi
+## delete settings added in extensions.json
+added_vscode_extensions="$(
+	git diff -U0 ./.vscode/extensions.json \
+		| grep '^+' \
+		| grep -Ev '^\+\+\+ b/' \
+		| tail -n +2 \
+		| sed 's/^+//'
+)"
+git restore --worktree ./.vscode/extensions.json
+cat <<-EOF
+	The following descriptions have been removed from .vscode/extensions.json
+	${added_vscode_extensions}
+EOF
+## delete settings added in settings.json
+added_vscode_settings="$(
+	git diff -U0 ./.vscode/settings.json \
+		| grep '^+' \
+		| grep -Ev '^\+\+\+ b/' \
+		| tail -n +2 \
+		| sed 's/^+//'
+)"
+git restore --worktree ./.vscode/settings.json
+cat <<-EOF
+	The following descriptions have been removed from ./.vscode/settings.json
+	${added_vscode_settings}
+EOF
+
 rm -rf "${CONFIG_DIR}"
 
 rm ./setup/scripts/create-pj.sh
