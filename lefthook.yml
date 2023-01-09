@@ -13,6 +13,9 @@ pre-commit:
       glob: '*.md'
       run: yarn markdownlint --fix {staged_files}
       fail_text: 'Read the report above.'
+    protect-branch:
+      run: git branch --show-current | tee /dev/tty | grep -Eqvx 'main|develop'
+      fail_text: "ERROR: Do NOT commit directly to 'main' or 'develop' branch."
 commit-msg:
   commands:
     commitlint:
