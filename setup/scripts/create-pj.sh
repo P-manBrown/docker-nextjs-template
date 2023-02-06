@@ -24,7 +24,8 @@ yarn set version stable
 
 # create project
 echo 'Creating your project...'
-yarn create next-app "${PROJECT_NAME}" --typescript --no-eslint
+yarn create next-app "${PROJECT_NAME}" \
+	--typescript --no-eslint --no-experimental-app --src-dir --import-alias @
 mv -f "./${PROJECT_NAME}"/{*,.[^\.]*} ./
 rmdir "./${PROJECT_NAME}"
 
@@ -77,9 +78,6 @@ if [[ "${REMOTE_CONTAINERS}" == 'true' ]]; then
 	EOF
 fi
 set -u
-## create ./src
-mkdir ./src
-mv ./{pages,styles} ./src
 ## mv setting files
 CONFIG_DIR='./setup/config'
 mv -f "${CONFIG_DIR}/globals.css" ./src/styles/globals.css
