@@ -12,9 +12,6 @@
     "ghcr.io/P-manBrown/devcontainer-features/git-from-src-fast:1": {},
     "ghcr.io/devcontainers/features/github-cli:1": {}
   },
-  "overrideFeatureInstallOrder": [
-    "ghcr.io/devcontainers/features/common-utils"
-  ],
   "customizations": {
     "vscode": {
       "extensions": [
