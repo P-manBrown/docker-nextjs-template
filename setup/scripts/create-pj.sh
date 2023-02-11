@@ -25,7 +25,11 @@ yarn set version stable
 # create project
 echo 'Creating your project...'
 yarn create next-app "${PROJECT_NAME}" \
-	--typescript --no-eslint --no-experimental-app --src-dir --import-alias @
+	--typescript \
+	--no-eslint \
+	--no-experimental-app \
+	--src-dir \
+	--import-alias '@/*'
 mv -f "./${PROJECT_NAME}"/{*,.[^\.]*} ./
 rmdir "./${PROJECT_NAME}"
 
@@ -37,14 +41,17 @@ git add .
 
 # install packages
 echo 'Installing packages...'
-## Yarn
-yarn dlx @yarnpkg/sdks vscode
+## Yarn plugin
 yarn plugin import typescript
 ## commitlint
 yarn add --dev @commitlint/cli @commitlint/config-conventional
 ## ESLint
 yarn add --dev --exact eslint eslint-config-next
-yarn add --dev eslint-config-prettier eslint-plugin-unused-imports
+yarn add --dev \
+	eslint-config-prettier \
+	eslint-plugin-jest \
+	eslint-plugin-storybook \
+	eslint-plugin-unused-imports
 ## Jest
 yarn add --dev jest jest-environment-jsdom ts-jest
 ## Lefthook
@@ -63,6 +70,8 @@ yarn add --dev tailwindcss postcss autoprefixer
 yarn dlx tailwindcss init -p
 ## Testing Library
 yarn add --dev @testing-library/react @testing-library/jest-dom
+## Yarn SDKs (must be run AFTER the package is installed)
+yarn dlx @yarnpkg/sdks vscode
 
 # setting up project
 echo 'Setting up your project...'
@@ -81,7 +90,7 @@ set -u
 ## mv setting files
 CONFIG_DIR='./setup/config'
 mv -f "${CONFIG_DIR}/globals.css" ./src/styles/globals.css
-mv -f "${CONFIG_DIR}/tsconfig.json" ./tsconfig.json
+mv -f "${CONFIG_DIR}/tailwind.config.js" ./tailwind.config.js
 sed -i -e "/.pnp/d; /# dependencies/r ${CONFIG_DIR}/.gitignore" ./.gitignore
 while read -r npm_script; do
 	npm_script_name="$(echo "${npm_script}" | cut -d ':' -f 1)"
@@ -90,7 +99,7 @@ while read -r npm_script; do
 	else
 		sed -i "/\"lint\"/a \    ${npm_script}" ./package.json
 	fi
-done < <(tac "${CONFIG_DIR}/npm-scripts.txt")
+done < <(tac "${CONFIG_DIR}/npm-scripts")
 sed -i -e "s/  }$/  },/" -e "/^}$/i \\${PACKAGE_MANAGER}" ./package.json
 printf '\x1b[1m%s\e[m\n' 'Check the contents of .gitignore and package.json'
 if [[ "${PROJECT_NAME}" == *'frontend'* ]]; then

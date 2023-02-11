@@ -3,11 +3,12 @@ pre-commit:
   parallel: true
   commands:
     eslint:
-      glob: 'src/*.{ts,tsx}'
-      run: yarn eslint --fix {staged_files}
+      glob: '*.{js,jsx,ts,tsx}'
+      exclude: '^\.|/\.'
+      run: yarn eslint --fix --max-warnings=0 {staged_files}
       fail_text: 'Read the report above.'
     prettier:
-      run: yarn prettier {staged_files} --write --ignore-unknown
+      run: yarn prettier --write --ignore-unknown {staged_files}
       fail_text: 'Read the report above.'
     markdownlint:
       glob: '*.md'
@@ -25,7 +26,7 @@ pre-push:
   commands:
     jest:
       files: git diff --name-only HEAD @{push} || git diff --name-only HEAD main
-      glob: 'src/*.{ts,tsx}'
+      glob: 'src/*.{js,jsx,ts,tsx}'
       env:
         NODE_ENV: test
       run: yarn jest --findRelatedTests {files}

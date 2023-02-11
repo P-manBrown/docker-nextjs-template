@@ -1,6 +1,13 @@
 module.exports = {
-  extends: ['next/core-web-vitals', 'prettier'],
+  extends: ['plugin:storybook/recommended', 'next/core-web-vitals', 'prettier'],
   plugins: ['unused-imports'],
+  overrides: [
+    {
+      files: ['test/**'],
+      plugins: ['jest'],
+      extends: ['plugin:jest/recommended', 'plugin:jest/style'],
+    },
+  ],
   rules: {
     'import/order': [
       'error',
