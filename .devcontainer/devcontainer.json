@@ -5,7 +5,7 @@
   "workspaceFolder": "/home/node/myapp-frontend",
   "postCreateCommand": "bash ./.devcontainer/postCreateCommand.sh",
   "features": {
-    "ghcr.io/devcontainers/features/common-utils:1": {
+    "ghcr.io/P-manBrown/devcontainer-features/common-utils:2": {
       "configureZshAsDefaultShell": true,
       "upgradePackages": false
     },
