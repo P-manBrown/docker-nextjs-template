@@ -15,23 +15,24 @@ if ! ps -p "$$" | grep -q 'bash'; then
 	exit 1
 fi
 
-PROJECT_NAME="$(grep 'COMPOSE_PROJECT_NAME' ./.env | cut -f 2 -d '=')"
-PACKAGE_MANAGER="$(grep '"packageManager"' ./package.json)"
-
 # update Yarn to the latest version
 echo 'Updating Yarn to the latest version...'
 yarn set version stable
 
+CONFIG_DIR='./setup/config'
+PACKAGE_MANAGER="$(grep '"packageManager"' ./package.json)"
+
 # create project
 echo 'Creating your project...'
-yarn create next-app "${PROJECT_NAME}" \
+project_name="$(grep 'COMPOSE_PROJECT_NAME' ./.env | cut -f 2 -d '=')"
+yarn create next-app "${project_name}" \
 	--typescript \
 	--no-eslint \
 	--no-experimental-app \
 	--src-dir \
 	--import-alias '@/*'
-mv -f "./${PROJECT_NAME}"/{*,.[^\.]*} ./
-rmdir "./${PROJECT_NAME}"
+mv -f "./${project_name}"/{*,.[^\.]*} ./
+rmdir "./${project_name}"
 
 # adding file contents to the index
 echo 'Adding file contents to the index...'
@@ -88,7 +89,6 @@ if [[ "${REMOTE_CONTAINERS}" == 'true' ]]; then
 fi
 set -u
 ## mv setting files
-CONFIG_DIR='./setup/config'
 mv -f "${CONFIG_DIR}/globals.css" ./src/styles/globals.css
 mv -f "${CONFIG_DIR}/tailwind.config.js" ./tailwind.config.js
 sed -i -e "/.pnp/d; /# dependencies/r ${CONFIG_DIR}/.gitignore" ./.gitignore
@@ -102,36 +102,19 @@ while read -r npm_script; do
 done < <(tac "${CONFIG_DIR}/npm-scripts")
 sed -i -e "s/  }$/  },/" -e "/^}$/i \\${PACKAGE_MANAGER}" ./package.json
 printf '\x1b[1m%s\e[m\n' 'Check the contents of .gitignore and package.json'
-if [[ "${PROJECT_NAME}" == *'frontend'* ]]; then
-	sed -i 's/main/develop/' ./.github/dependabot.yml
-else
-	sed -i '/protect-branch:$/,/fail_text:.*branch\."$/d' ./lefthook.yml
-fi
-## delete settings added in extensions.json
-added_vscode_extensions="$(
+
+## remove settings added in extensions.json
+git restore --worktree ./.vscode/extensions.json
+removed_vscode_extensions="$(
 	git diff -U0 ./.vscode/extensions.json \
 		| grep '^+' \
 		| grep -Ev '^\+\+\+ b/' \
 		| tail -n +2 \
 		| sed 's/^+//'
 )"
-git restore --worktree ./.vscode/extensions.json
 cat <<-EOF
-	The following descriptions have been removed from .vscode/extensions.json
-	${added_vscode_extensions}
-EOF
-## delete settings added in settings.json
-added_vscode_settings="$(
-	git diff -U0 ./.vscode/settings.json \
-		| grep '^+' \
-		| grep -Ev '^\+\+\+ b/' \
-		| tail -n +2 \
-		| sed 's/^+//'
-)"
-git restore --worktree ./.vscode/settings.json
-cat <<-EOF
-	The following descriptions have been removed from ./.vscode/settings.json
-	${added_vscode_settings}
+	The following descriptions have been removed from ./.vscode/extensions.json
+	${removed_vscode_extensions}
 EOF
 
 rm -rf "${CONFIG_DIR}"
