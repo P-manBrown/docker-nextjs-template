@@ -104,7 +104,6 @@ sed -i -e "s/  }$/  },/" -e "/^}$/i \\${PACKAGE_MANAGER}" ./package.json
 printf '\x1b[1m%s\e[m\n' 'Check the contents of .gitignore and package.json'
 
 ## remove settings added in extensions.json
-git restore --worktree ./.vscode/extensions.json
 removed_vscode_extensions="$(
 	git diff -U0 ./.vscode/extensions.json \
 		| grep '^+' \
@@ -112,6 +111,7 @@ removed_vscode_extensions="$(
 		| tail -n +2 \
 		| sed 's/^+//'
 )"
+git restore --worktree ./.vscode/extensions.json
 cat <<-EOF
 	The following descriptions have been removed from ./.vscode/extensions.json
 	${removed_vscode_extensions}
