@@ -16,12 +16,13 @@
     "vscode": {
       "extensions": [
         "VisualStudioExptTeam.vscodeintellicode",
+        "streetsidesoftware.code-spell-checker",
         "EditorConfig.EditorConfig",
-        "dbaeumer.vscode-eslint",
-        "esbenp.prettier-vscode",
         "yzhang.markdown-all-in-one",
         "DavidAnson.vscode-markdownlint",
         "bierner.markdown-preview-github-styles",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
         "Orta.vscode-jest",
         "paulshen.paul-typescript-toolkit",
         "bradlc.vscode-tailwindcss",
