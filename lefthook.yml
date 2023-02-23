@@ -1,4 +1,4 @@
-min_version: 1.1.3
+min_version: 1.3.0
 pre-commit:
   parallel: true
   commands:
@@ -25,9 +25,8 @@ commit-msg:
 pre-push:
   commands:
     jest:
-      files: git diff --name-only HEAD @{push} || git diff --name-only HEAD main
       glob: 'src/*.{js,jsx,ts,tsx}'
       env:
         NODE_ENV: test
-      run: yarn jest --findRelatedTests {files}
+      run: yarn jest --findRelatedTests {push_files}
       fail_text: 'Read the report above.'
