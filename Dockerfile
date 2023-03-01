@@ -4,7 +4,7 @@ ARG PROJECT_NAME
 ARG USER_NAME
 ENV TZ=Asia/Tokyo
 
-RUN corepack enable
+RUN corepack enable npm yarn
 
 USER ${USER_NAME}
 
