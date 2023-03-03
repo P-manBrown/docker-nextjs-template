@@ -91,16 +91,20 @@ set -u
 ## mv setting files
 mv -f "${CONFIG_DIR}/globals.css" ./src/styles/globals.css
 mv -f "${CONFIG_DIR}/tailwind.config.js" ./tailwind.config.js
-sed -i -e "/.pnp/d; /# dependencies/r ${CONFIG_DIR}/.gitignore" ./.gitignore
+cp -f ./.gitignore /tmp/.gitignore
+sed -i -e "/.pnp/d; /# dependencies/r ${CONFIG_DIR}/.gitignore" /tmp/.gitignore
+cp -f /tmp/.gitignore ./.gitignore
+cp -f ./package.json /tmp/package.json
 while read -r npm_script; do
 	npm_script_name="$(echo "${npm_script}" | cut -d ':' -f 1)"
 	if grep -q "${npm_script_name}" ./package.json; then
-		sed -i "/${npm_script_name}/c \    ${npm_script}" ./package.json
+		sed -i "/${npm_script_name}/c \    ${npm_script}" /tmp/package.json
 	else
-		sed -i "/\"lint\"/a \    ${npm_script}" ./package.json
+		sed -i "/\"lint\"/a \    ${npm_script}" /tmp/package.json
 	fi
 done < <(tac "${CONFIG_DIR}/npm-scripts")
-sed -i -e "s/  }$/  },/" -e "/^}$/i \\${PACKAGE_MANAGER}" ./package.json
+sed -i -e "s/  }$/  },/" -e "/^}$/i \\${PACKAGE_MANAGER}" /tmp/package.json
+cp -f /tmp/package.json ./package.json
 printf '\x1b[1m%s\e[m\n' 'Check the contents of .gitignore and package.json'
 
 ## remove settings added in extensions.json
