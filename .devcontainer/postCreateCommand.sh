@@ -22,9 +22,9 @@ sudo chown -R "${USER}" "${HOME}/shell_log"
 echo 'Setting up Git...'
 set +e
 repo_root="$(git rev-parse --show-toplevel)"
-set -e
 sudo git config --system --add safe.directory "${repo_root:-${PWD}}"
 git config --local core.editor 'code --wait'
+set -e
 
 echo 'Setting up GitHub CLI...'
 gh config set editor 'code --wait'
