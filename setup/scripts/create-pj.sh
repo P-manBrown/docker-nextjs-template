@@ -28,6 +28,7 @@ project_name="$(grep 'COMPOSE_PROJECT_NAME' ./.env | cut -f 2 -d '=')"
 yarn create next-app "${project_name}" \
 	--typescript \
 	--no-eslint \
+	--no-tailwind \
 	--no-experimental-app \
 	--src-dir \
 	--import-alias '@/*'
