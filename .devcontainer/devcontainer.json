@@ -43,6 +43,12 @@
           "source.addMissingImports",
           "source.fixAll.eslint"
         ],
+        "editor.quickSuggestions": {
+          "strings": true
+        },
+        "files.associations": {
+          "*.css": "tailwindcss"
+        },
         "markdown.extension.toc.levels": "2..6",
         "[markdown]": {
           "editor.defaultFormatter": "yzhang.markdown-all-in-one",
