@@ -13,5 +13,5 @@ services:
       - host.docker.internal:host-gateway
     ports:
       - ${FRONTEND_PORT:-3000}:3000
-      - ${FRONTEND_DEBUG_PORT:-9230}:9230
+      - ${FRONTEND_DEBUG_PORT:-9229}:9229
       - ${STORYBOOK_PORT:-6006}:6006

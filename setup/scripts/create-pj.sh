@@ -29,7 +29,7 @@ yarn create next-app "${project_name}" \
 	--typescript \
 	--no-eslint \
 	--no-tailwind \
-	--no-experimental-app \
+	--app \
 	--src-dir \
 	--import-alias '@/*'
 mv -f "./${project_name}"/{*,.[^\.]*} ./
