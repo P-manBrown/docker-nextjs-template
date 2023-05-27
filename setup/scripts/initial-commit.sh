@@ -68,6 +68,8 @@ if [[ "${project_name}" == *'frontend'* ]]; then
 			-f branch="${branch}" \
 			-F requiredReviews=0
 	done
+	echo "Changing default branch to develop..."
+	gh repo edit "${owner}"/"${repo}" --default-branch develop
 fi
 
 echo 'Done!!'
