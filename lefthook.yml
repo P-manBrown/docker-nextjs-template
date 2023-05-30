@@ -30,5 +30,5 @@ pre-push:
       glob: 'src/*.{js,jsx,ts,tsx}'
       env:
         NODE_ENV: test
-      run: yarn jest --findRelatedTests {push_files}
+      run: yarn jest --passWithNoTests --findRelatedTests {push_files}
       fail_text: 'Read the report above.'
